@@ -1,17 +1,25 @@
-feat!: enterprise-grade rewrite with ServiceNow SDK, Fluent, and modern architecture
+feat!: harden sincronia runtime for enterprise reliability and operations
 
-- Complete refactor to modern TypeScript architecture (Node 18+)
-- Integrated latest ServiceNow SDK (v4+) and CLI
-- Full Fluent DSL support (metadata-as-code)
-- Plugin-based, scalable architecture
-- Multi-instance environment management (dev, QA, prod)
-- CI/CD pipeline integration (GitHub Actions)
-- Hot-reload dev mode, caching, and parallel builds
-- Enhanced CLI UX with structured logging and error handling
-- Testing framework (unit, integration, e2e)
-- Security improvements (credential handling, safe deployments)
-- Removed legacy Babel/Rhino pipeline
-- Fully enterprise-ready, production-grade
+- Added typed error system with actionable resolution hints
+  and plugin error isolation
+- Hardened core runtime context with run metadata, flags, metrics,
+  and logger integration
+- Implemented multi-instance environment policy model with branch/
+  protection controls
+- Added resilient SDK execution with retries, dual-mode command fallback,
+  and rollback hooks
+- Introduced deploy/sync locking, audit trail, and deployment history recording
+- Improved dev watch mode with debounce, serialized build/deploy queue,
+  and graceful shutdown
+- Added Fluent cache fingerprinting to skip redundant compile/build paths
+- Expanded tests for retry, locking, plugin manager isolation,
+  config loading, and lint plugin behavior
+- Hardened GitHub Actions and Azure pipelines with typecheck,
+  concurrency, and staged deployment flow
+- Added comprehensive documentation suite including technical architecture
+  and troubleshooting guides
+- Added SECURITY.md and updated README for open-source/enterprise readiness
 
 BREAKING CHANGE:
-Legacy Sincronia architecture removed. New configuration and project structure required.
+Environment configuration now supports policy-driven multi-instance definitions
+and protected deployment controls.
