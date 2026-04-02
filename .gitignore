@@ -16,3 +16,6 @@ npm-debug.log*
 .vscode/
 
 legacy/
+.sincronia/
+apps/*/.now/
+apps/*/src/fluent/generated/

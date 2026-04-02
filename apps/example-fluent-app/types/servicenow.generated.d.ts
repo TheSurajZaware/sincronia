@@ -16,3 +16,7 @@ declare namespace ServiceNow {
 }
 
 declare const gs: ServiceNow.GlideSystem;
+
+declare interface KeysRegistry {
+  [key: string]: unknown;
+}

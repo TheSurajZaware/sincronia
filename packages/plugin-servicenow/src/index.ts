@@ -173,7 +173,11 @@ export const createServiceNowPlugin = (
       await runSdkCommand(ctx, options, ["test", options.appRoot], "test");
     },
     "before:sync": async (ctx) => {
-      await runSdkCommand(ctx, options, ["sync", options.appRoot], "sync");
+      if (ctx.flags.dryRun) {
+        ctx.logger.info("Dry-run mode active; sync command not executed.");
+        return;
+      }
+      await runSdkCommand(ctx, options, ["download", options.appRoot], "sync");
     },
   },
 });

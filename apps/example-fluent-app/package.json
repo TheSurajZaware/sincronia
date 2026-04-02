@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "clean": "rimraf dist",
-    "lint": "eslint src fluent tests --ext .ts",
+    "lint": "eslint src fluent tests --ext .ts --ignore-pattern src/fluent/generated/**",
     "test": "vitest run --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
