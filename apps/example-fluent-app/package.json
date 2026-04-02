@@ -1,0 +1,16 @@
+{
+  "name": "@sincronia/example-fluent-app",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "rimraf dist",
+    "lint": "eslint src fluent tests --ext .ts",
+    "test": "vitest run --coverage",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@sincronia/testing": "2.0.0-next.0"
+  }
+}

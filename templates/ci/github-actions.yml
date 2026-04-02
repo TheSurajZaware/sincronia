@@ -1,0 +1,37 @@
+name: Sincronia CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  install-lint-test-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run test
+      - run: npm run build
+
+  deploy:
+    needs: install-lint-test-build
+    if: github.ref == 'refs/heads/main'
+    strategy:
+      matrix:
+        env: [dev, qa, prod]
+    runs-on: ubuntu-latest
+    environment: ${{ matrix.env }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+      - run: npm ci
+      - run: npx sincronia deploy --env ${{ matrix.env }}

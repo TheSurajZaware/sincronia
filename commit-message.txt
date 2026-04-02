@@ -1,0 +1,17 @@
+feat!: enterprise-grade rewrite with ServiceNow SDK, Fluent, and modern architecture
+
+- Complete refactor to modern TypeScript architecture (Node 18+)
+- Integrated latest ServiceNow SDK (v4+) and CLI
+- Full Fluent DSL support (metadata-as-code)
+- Plugin-based, scalable architecture
+- Multi-instance environment management (dev, QA, prod)
+- CI/CD pipeline integration (GitHub Actions)
+- Hot-reload dev mode, caching, and parallel builds
+- Enhanced CLI UX with structured logging and error handling
+- Testing framework (unit, integration, e2e)
+- Security improvements (credential handling, safe deployments)
+- Removed legacy Babel/Rhino pipeline
+- Fully enterprise-ready, production-grade
+
+BREAKING CHANGE:
+Legacy Sincronia architecture removed. New configuration and project structure required.

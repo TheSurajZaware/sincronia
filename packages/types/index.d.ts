@@ -1,243 +1,35 @@
-export namespace Sinc {
-  interface SharedCmdArgs {
-    logLevel: string;
-  }
+export type SincroniaEnvironment = {
+  instanceUrl: string;
+  authProfile?: string;
+  username?: string;
+  passwordEnvVar?: string;
+};
 
-  interface CmdDownloadArgs extends SharedCmdArgs {
-    scope: string;
-  }
-  interface PushCmdArgs extends SharedCmdArgs {
-    target?: string;
-    diff: string;
-    scopeSwap: boolean;
-    updateSet: string;
-    ci: boolean;
-  }
-  interface BuildCmdArgs extends SharedCmdArgs {
-    diff: string;
-  }
-  interface Config {
-    sourceDirectory: string;
-    buildDirectory: string;
-    rules?: PluginRule[];
-    includes?: TablePropMap;
-    excludes?: TablePropMap;
-    tableOptions: ITableOptionsMap;
-    refreshInterval: number;
-  }
+export type SincroniaConfig = {
+  defaultEnvironment: string;
+  sdkCommand?: string[];
+  appRoot: string;
+  environments: Record<string, SincroniaEnvironment>;
+};
 
-  interface ITableOptionsMap {
-    [table: string]: ITableOptions;
-  }
-
-  interface ITableOptions {
-    displayField?: string;
-    differentiatorField?: string | string[];
-    query: string;
-  }
-
-  interface FieldConfig {
-    type: SN.FileType;
-  }
-  interface FieldMap {
-    [fieldName: string]: FieldConfig;
-  }
-  interface TablePropMap {
-    [table: string]: boolean | FieldMap;
-  }
-  interface PluginRule {
-    match: RegExp;
-    plugins: PluginConfig[];
-  }
-  interface PluginConfig {
+export type FluentTableDefinition = {
+  name: string;
+  label: string;
+  extends?: string;
+  columns: Array<{
     name: string;
-    options: { [property: string]: any };
-  }
-  interface FileSyncParams {
-    filePath: string;
-    name: string;
-    tableName: string;
-    targetField: string;
-    ext: string;
-  }
+    type: "string" | "integer" | "boolean" | "reference";
+    reference?: string;
+    mandatory?: boolean;
+    maxLength?: number;
+  }>;
+};
 
-  interface FileContext extends FileSyncParams {
-    sys_id: string;
-    scope: string;
-    fileContents?: string;
-  }
-
-  interface ServerRequestConfig {
-    url: string;
-    data: string;
-    method: string;
-  }
-
-  interface Plugin {
-    run: PluginFunc;
-  }
-
-  interface PluginFunc {
-    (
-      context: FileContext,
-      content: string,
-      options: any
-    ): Promise<PluginResults>;
-  }
-
-  interface PluginResults {
-    success: boolean;
-    output: string;
-  }
-
-  type TransformResults = {
-    success: boolean;
-    content: string;
-  };
-
-  interface ScopeCheckResult {
-    manifestScope: string;
-    sessionScope: string;
-    match: boolean;
-  }
-  interface LoginAnswers {
-    instance: string;
-    username: string;
-    password: string;
-  }
-
-  interface AppSelectionAnswer {
-    app: string;
-  }
-
-  interface DiffFile {
-    changed: Array<string>;
-  }
-
-  type RecordContextMap = Record<string, FileContext>;
-  type TableContextTree = Record<string, RecordContextMap>;
-  type AppFileContextTree = Record<string, TableContextTree>;
-
-  interface PushResult {
-    success: boolean;
-    message: string;
-  }
-
-  interface BuildResult extends PushResult {}
-
-  interface BuildRecord {
-    result: Sinc.PromiseResult<Record<string, string>>;
-    summary: string;
-    context: Sinc.FileContext;
-  }
-
-  type SuccessPromiseResult<T> = { status: "fulfilled"; value: T };
-  type FailPromiseResult = { status: "rejected"; reason: any };
-  type PromiseResult<T> = SuccessPromiseResult<T> | FailPromiseResult;
-
-  interface SNAPIResponse<T> {
-    result: T;
-  }
-
-  interface BuildableRecord {
-    table: string;
-    sysId: string;
-    fields: Record<string, Sinc.FileContext>;
-  }
-
-  interface RecBuildFail {
-    success: false;
-    message: string;
-  }
-
-  interface RecBuildSuccess {
-    success: true;
-    builtRec: Record<string, string>;
-  }
-
-  type RecBuildRes = RecBuildFail | RecBuildSuccess;
-}
-
-export namespace SN {
-  interface AppManifest {
-    tables: TableMap;
-    scope: string;
-  }
-
-  interface TableMap {
-    [tableName: string]: TableConfig;
-  }
-
-  interface TableConfig {
-    records: TableConfigRecords;
-  }
-
-  interface TableConfigRecords {
-    [name: string]: MetaRecord;
-  }
-
-  interface MetaRecord {
-    files: File[];
-    name: string;
-    sys_id: string;
-  }
-
-  interface File {
-    name: string;
-    type: FileType;
-    content?: string;
-  }
-
-  interface Field {
-    name: string;
-    type: string;
-  }
-
-  interface Record {
-    sys_id: string;
-  }
-
-  interface TableAPIResult {
-    result: Record[];
-  }
-
-  type FileType = "js" | "css" | "xml" | "html" | "scss" | "txt";
-
-  interface TypeMap {
-    [type: string]: string;
-  }
-
-  interface MissingFileTableMap {
-    [tableName: string]: MissingFileRecord;
-  }
-  interface MissingFileRecord {
-    [sys_id: string]: File[];
-  }
-  interface ScopeObj {
-    scope: string;
-    sys_id: string;
-  }
-  interface App {
-    scope: string;
-    displayName: string;
-    sys_id: string;
-  }
-
-  interface UserRecord {
-    sys_id: string;
-  }
-
-  interface UserPrefRecord {
-    sys_id: string;
-  }
-
-  interface ScopeRecord {
-    sys_id: string;
-  }
-
-  interface UpdateSetRecord {
-    sys_id: string;
-  }
-}
-
-export type TSFIXME = any;
+export type FluentBusinessRuleDefinition = {
+  name: string;
+  table: string;
+  when: "before" | "after" | "async";
+  condition?: string;
+  scriptInclude: string;
+  active?: boolean;
+};

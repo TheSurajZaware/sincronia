@@ -1,20 +1,8 @@
 {
   "name": "@sincronia/types",
-  "version": "0.4.2-alpha.3",
-  "description": "Type Declarations for Sincronia",
+  "version": "2.0.0-next.0",
+  "description": "Shared type declarations for modern Sincronia packages",
+  "type": "module",
   "main": "index.d.ts",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nuvolo/sincronia.git"
-  },
-  "author": "",
-  "license": "GPL-3.0",
-  "bugs": {
-    "url": "https://github.com/nuvolo/sincronia/issues"
-  },
-  "homepage": "https://github.com/nuvolo/sincronia#readme",
-  "gitHead": "67b694054cf072be150b9bd4dc3d1b01f8e24ed9"
+  "types": "index.d.ts"
 }

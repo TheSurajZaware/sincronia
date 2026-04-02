@@ -1,20 +1,45 @@
 trigger:
-- dev
-- master
+  branches:
+    include:
+      - main
 
 pool:
-  vmImage: 'macOs-latest'
+  vmImage: ubuntu-latest
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '18.x'
-  displayName: 'Install Node.js'
+variables:
+  NODE_VERSION: "18.x"
 
-- script: |
-    npm install -g typescript
-  displayName: 'install typescript'
+stages:
+  - stage: Validate
+    jobs:
+      - job: lint_test_build
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: $(NODE_VERSION)
+          - script: npm ci
+            displayName: Install
+          - script: npm run lint
+            displayName: Lint
+          - script: npm run test
+            displayName: Test
+          - script: npm run build
+            displayName: Build
 
-- script: |
-    npm install
-  displayName: 'npm install workspaces'
+  - stage: DeployDev
+    dependsOn: Validate
+    condition: succeeded()
+    jobs:
+      - deployment: deploy_dev
+        environment: dev
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: NodeTool@0
+                  inputs:
+                    versionSpec: $(NODE_VERSION)
+                - script: npm ci
+                  displayName: Install
+                - script: npx sincronia deploy --env dev
+                  displayName: Deploy

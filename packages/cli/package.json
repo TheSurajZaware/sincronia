@@ -1,0 +1,33 @@
+{
+  "name": "@sincronia/cli",
+  "version": "2.0.0-next.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "sincronia": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "rimraf dist",
+    "dev": "tsx src/index.ts",
+    "lint": "eslint src --ext .ts",
+    "test": "vitest run --passWithNoTests",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@sincronia/core": "2.0.0-next.0",
+    "@sincronia/plugin-ci": "2.0.0-next.0",
+    "@sincronia/plugin-fluent": "2.0.0-next.0",
+    "@sincronia/plugin-lint": "2.0.0-next.0",
+    "@sincronia/plugin-servicenow": "2.0.0-next.0",
+    "chalk": "^5.4.1",
+    "chokidar": "^4.0.3",
+    "commander": "^13.1.0",
+    "prompts": "^2.4.2",
+    "tsx": "^4.19.3"
+  },
+  "devDependencies": {
+    "@types/prompts": "^2.4.9"
+  }
+}
