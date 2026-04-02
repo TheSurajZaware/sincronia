@@ -4,6 +4,20 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Deploy target"
+        required: true
+        type: choice
+        options: [dev, qa, stage, prod]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: template-ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   install-lint-test-build:
@@ -15,18 +29,16 @@ jobs:
           node-version: "18"
           cache: "npm"
       - run: npm ci
+      - run: npm run typecheck
       - run: npm run lint
       - run: npm run test
       - run: npm run build
 
   deploy:
     needs: install-lint-test-build
-    if: github.ref == 'refs/heads/main'
-    strategy:
-      matrix:
-        env: [dev, qa, prod]
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
-    environment: ${{ matrix.env }}
+    environment: ${{ github.event.inputs.environment }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -34,4 +46,4 @@ jobs:
           node-version: "18"
           cache: "npm"
       - run: npm ci
-      - run: npx sincronia deploy --env ${{ matrix.env }}
+      - run: npx sincronia deploy --env ${{ github.event.inputs.environment }}

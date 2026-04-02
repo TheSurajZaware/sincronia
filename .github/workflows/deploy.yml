@@ -10,7 +10,20 @@ on:
         options:
           - dev
           - qa
+          - stage
           - prod
+      dry_run:
+        description: "Dry run only"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-${{ github.event.inputs.environment }}
+  cancel-in-progress: false
 
 jobs:
   deploy:
@@ -23,7 +36,13 @@ jobs:
           node-version: "18"
           cache: "npm"
       - run: npm ci
+      - run: npm run typecheck
       - run: npm run build
-      - run: npx sincronia deploy --env ${{ github.event.inputs.environment }}
+      - if: ${{ github.event.inputs.dry_run == 'true' }}
+        run: npx sincronia deploy --env ${{ github.event.inputs.environment }} --dry-run
+        env:
+          SN_AUTH_PROFILE: ${{ secrets.SN_AUTH_PROFILE }}
+      - if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: npx sincronia deploy --env ${{ github.event.inputs.environment }}
         env:
           SN_AUTH_PROFILE: ${{ secrets.SN_AUTH_PROFILE }}

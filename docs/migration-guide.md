@@ -11,7 +11,7 @@ This guide helps teams move from legacy Sincronia (Babel/Rhino workflows) to the
 ## 2) Replace legacy configuration
 
 - Old: `sinc.config.js`, `.env`, manifest-driven tables
-- New: `.sincronia.config.ts` with `environments` + `appRoot`
+- New: `.sincronia.config.ts` with `environments`, `instances[]`, policy guards, and `appRoot`
 
 ## 3) Move metadata to Fluent
 

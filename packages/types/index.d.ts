@@ -1,4 +1,23 @@
+export type SincroniaInstance = {
+  name: string;
+  instanceUrl: string;
+  authProfile?: string;
+  username?: string;
+  passwordEnvVar?: string;
+};
+
+export type SincroniaEnvironmentPolicy = {
+  protected?: boolean;
+  requireConfirmation?: boolean;
+  allowedBranches?: string[];
+};
+
 export type SincroniaEnvironment = {
+  instances: SincroniaInstance[];
+  policy?: SincroniaEnvironmentPolicy;
+};
+
+export type LegacySincroniaEnvironment = {
   instanceUrl: string;
   authProfile?: string;
   username?: string;
@@ -9,7 +28,10 @@ export type SincroniaConfig = {
   defaultEnvironment: string;
   sdkCommand?: string[];
   appRoot: string;
-  environments: Record<string, SincroniaEnvironment>;
+  environments: Record<
+    string,
+    SincroniaEnvironment | LegacySincroniaEnvironment
+  >;
 };
 
 export type FluentTableDefinition = {

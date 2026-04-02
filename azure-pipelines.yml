@@ -19,6 +19,8 @@ stages:
               versionSpec: $(NODE_VERSION)
           - script: npm ci
             displayName: Install
+          - script: npm run typecheck
+            displayName: Typecheck
           - script: npm run lint
             displayName: Lint
           - script: npm run test
@@ -42,4 +44,40 @@ stages:
                 - script: npm ci
                   displayName: Install
                 - script: npx sincronia deploy --env dev
+                  displayName: Deploy
+
+  - stage: DeployQa
+    dependsOn: DeployDev
+    condition: succeeded()
+    jobs:
+      - deployment: deploy_qa
+        environment: qa
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: NodeTool@0
+                  inputs:
+                    versionSpec: $(NODE_VERSION)
+                - script: npm ci
+                  displayName: Install
+                - script: npx sincronia deploy --env qa
+                  displayName: Deploy
+
+  - stage: DeployProd
+    dependsOn: DeployQa
+    condition: succeeded()
+    jobs:
+      - deployment: deploy_prod
+        environment: prod
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: NodeTool@0
+                  inputs:
+                    versionSpec: $(NODE_VERSION)
+                - script: npm ci
+                  displayName: Install
+                - script: npx sincronia deploy --env prod
                   displayName: Deploy

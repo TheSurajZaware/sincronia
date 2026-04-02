@@ -18,9 +18,17 @@ Key extension points:
 - `before:build`, `after:build`
 - `before:deploy`, `after:deploy`
 - `before:test`, `after:test`
+- `before:sync`, `after:sync`
 - `before:lint`, `after:lint`
 - `before:dev`, `after:dev`
 - `before:generate`, `after:generate`
+
+## Stability and safety model
+
+- Hooks run with typed execution context (`runId`, logger, metrics, config).
+- Hook failures are categorized and isolated when non-fail-fast mode is enabled (`--trace`).
+- Production operations should be implemented with retries and idempotency.
+- Plugins should avoid long-lived unmanaged resources; close watchers/sockets on shutdown.
 
 ## Built-in Plugins
 

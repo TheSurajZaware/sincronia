@@ -21,6 +21,7 @@
   ],
   "scripts": {
     "build": "turbo run build",
+    "ci": "npm run typecheck && npm run lint && npm run test && npm run build",
     "clean": "turbo run clean && rimraf node_modules",
     "dev": "npm run dev -w @sincronia/cli -- dev --watch",
     "deploy": "npm run dev -w @sincronia/cli -- deploy",
